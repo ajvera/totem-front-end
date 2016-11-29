@@ -14,11 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.Manifest;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.opengl.GLES20;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,6 +42,7 @@ import com.wikitude.tools.device.features.MissingDeviceFeatures;
  */
 public class MainActivity extends ListActivity{
 
+
     private Map<Integer, List<SampleMeta>> samples;
 
     private Set<String> irSamples;
@@ -47,11 +52,9 @@ public class MainActivity extends ListActivity{
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
 
-        irSamples = getListFrom("samples/samples_ir.lst");
-        geoSamples = getListFrom("samples/samples_geo.lst");
 
-        this.setContentView( this.getContentViewId() );
-
+//        this.setContentView( this.getContentViewId() );
+        this.setContentView(this.getContentViewId());
         // ensure to clean cache when it is no longer required
         MainActivity.deleteDirectoryContent ( ArchitectView.getCacheDirectoryAbsoluteFilePath(this) );
 
@@ -85,7 +88,7 @@ public class MainActivity extends ListActivity{
     @Override
     protected void onListItemClick( ListView l, View v, int position, long id ) {
         super.onListItemClick( l, v, position, id );
-
+        Log.i("message", "CRASH");
         final Intent intent = new Intent( this, MainSamplesListActivity.class );
 
         final List<SampleMeta> activitiesToLaunch = getActivitiesToLaunch(position);
@@ -166,11 +169,19 @@ public class MainActivity extends ListActivity{
 
     public void buttonClicked(final View view)
     {
-        try {
-            this.startActivity( new Intent( this, Class.forName( "com.wikitude.samples.utils.urllauncher.ARchitectUrlLauncherActivity" ) ) );
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        Log.i("argument","something is hitting this");
+
+        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 1);
+        } else {
+            if ( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+            }
         }
+
+        Intent intent = new Intent( this, wikitude_test.devbootcamp.wikitudetest.SampleCamActivity.class );
+
+        this.startActivity(intent);
     }
 
     /**

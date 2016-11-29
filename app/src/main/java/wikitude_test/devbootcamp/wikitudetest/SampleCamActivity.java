@@ -29,14 +29,16 @@ public class SampleCamActivity extends AbstractArchitectCamActivity {
 	 */
 	private long lastCalibrationToastShownTimeMillis = System.currentTimeMillis();
 
+	private static final int WIKITUDE_PERMISSIONS_REQUEST_CAMERA = 1;
+	private static final int WIKITUDE_PERMISSIONS_REQUEST_GPS = 2;
+
     protected Bitmap screenCapture = null;
 
     private static final int WIKITUDE_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 3;
 
 	@Override
 	public String getARchitectWorldPath() {
-		return getIntent().getExtras().getString(
-				MainSamplesListActivity.EXTRAS_KEY_ACTIVITY_ARCHITECT_WORLD_URL);
+		return "index.html";
 	}
 
 	@Override
@@ -114,18 +116,18 @@ public class SampleCamActivity extends AbstractArchitectCamActivity {
 		};
 	}
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case WIKITUDE_PERMISSIONS_REQUEST_EXTERNAL_STORAGE: {
-                if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-                    this.saveScreenCaptureToExternalStorage(SampleCamActivity.this.screenCapture);
-                } else {
-                    Toast.makeText(this, "Please allow access to external storage, otherwise the screen capture can not be saved.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        switch (requestCode) {
+//            case WIKITUDE_PERMISSIONS_REQUEST_EXTERNAL_STORAGE: {
+//                if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+//                    this.saveScreenCaptureToExternalStorage(SampleCamActivity.this.screenCapture);
+//                } else {
+//                    Toast.makeText(this, "Please allow access to external storage, otherwise the screen capture can not be saved.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
 
 	@Override
 	public ILocationProvider getLocationProvider(final LocationListener locationListener) {
@@ -140,14 +142,12 @@ public class SampleCamActivity extends AbstractArchitectCamActivity {
 
 	@Override
 	protected boolean hasGeo() {
-		return getIntent().getExtras().getBoolean(
-				MainSamplesListActivity.EXTRAS_KEY_ACTIVITY_GEO);
+		return true;
 	}
 
 	@Override
 	protected boolean hasIR() {
-		return getIntent().getExtras().getBoolean(
-				MainSamplesListActivity.EXTRAS_KEY_ACTIVITY_IR);
+		return false;
 	}
 
 	@Override
@@ -190,4 +190,24 @@ public class SampleCamActivity extends AbstractArchitectCamActivity {
             }
         }
     }
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case WIKITUDE_PERMISSIONS_REQUEST_CAMERA: {
+				if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+					if ( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+						ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, WIKITUDE_PERMISSIONS_REQUEST_GPS);
+					}
+				} else {
+					Toast.makeText(this, "Sorry, augmented reality doesn't work without reality.\n\nPlease grant camera permission.", Toast.LENGTH_LONG).show();
+				}
+				return;
+			}
+			case WIKITUDE_PERMISSIONS_REQUEST_GPS: {
+
+				return;
+			}
+		}
+	}
 }
