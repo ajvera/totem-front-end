@@ -21,6 +21,9 @@
 	   		         android:padding="10dp"
 					 android:paddingTop="200dp"
 					 android:paddingBottom="200dp"
-	   		         android:text="@string/main_title_urlLauncher" />
+	   		         android:text="@string/main_title_urlLauncher"
+					 android:background="#008487"
+					 android:textColor="#00faff"
+					 android:textSize="69dp"/>
 		
 </RelativeLayout>
