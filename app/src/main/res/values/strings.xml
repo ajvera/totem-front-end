@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wikitude Test</string>
+    <string name="app_name">Totem</string>
     <string name="main_title_urlLauncher">View Totems</string>
     <string name="compass_accuracy_low">Please re-calibrate compass by waving your device in a figure 8 motion.</string>
     <string name="location_fetching">Trying to find out where you are</string>
