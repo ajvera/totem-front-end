@@ -63,9 +63,9 @@ public class MainActivity extends ListActivity{
 
         // use default list-ArrayAdapter */
         this.setListAdapter( new ArrayAdapter<String>( this, android.R.layout.simple_list_item_1, android.R.id.text1, values ) );
-        TextView t = (TextView) findViewById(R.id.textView1);
+//        TextView t = (TextView) findViewById(R.id.textView1);
         String versionInfo = "SDK build date: " + ArchitectView.getBuildProperty("build.date");
-        t.setText(versionInfo);
+//        t.setText(versionInfo);
     }
 
     private Set<String> getListFrom(String fname) {

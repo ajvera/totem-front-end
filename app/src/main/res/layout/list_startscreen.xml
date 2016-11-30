@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,35 +7,20 @@
 
 	    <ListView
 			android:id="@android:id/list"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" android:layout_weight="1">
+	        android:layout_width="0dp"
+	        android:layout_height="0dp" android:layout_weight="0">
 	    </ListView>
-	    
-	    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#EEEEEEEE" android:layout_weight="0">
-
-	   		 <LinearLayout
-	   		     android:layout_width="match_parent"
-	   		     android:layout_height="match_parent"
-	   		     android:orientation="vertical" >
 
 	   		     <Button
-	   		         android:layout_width="wrap_content"
-	   		         android:layout_height="wrap_content"
+	   		         android:id="@+id/buttonLaunchUrl"
+	   		         android:layout_width="300sp"
+	   		         android:layout_height="400sp"
 	   		         android:layout_gravity="center"
 	   		         android:onClick="buttonClicked"
-	   		         android:padding="10dip"
+					 android:layout_centerInParent="true"
+	   		         android:padding="10dp"
+					 android:paddingTop="200dp"
+					 android:paddingBottom="200dp"
 	   		         android:text="@string/main_title_urlLauncher" />
-
-	   		     <TextView
-	   		         android:id="@+id/textView1"
-	   		         android:layout_width="wrap_content"
-	   		         android:layout_height="wrap_content"
-	   		         android:layout_gravity="center"
-	   		         android:text="Medium Text"
-	   		         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-	   		 </LinearLayout>
-
-		</FrameLayout>
 		
-</LinearLayout>
+</RelativeLayout>
