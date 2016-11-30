@@ -1,11 +1,3 @@
-// information about server communication. This sample webservice is provided by Wikitude and returns random dummy places near given location
-var ServerInformation = {
-	POIDATA_SERVER: "https://example.wikitude.com/GetSamplePois/",
-	POIDATA_SERVER_ARG_LAT: "lat",
-	POIDATA_SERVER_ARG_LON: "lon",
-	POIDATA_SERVER_ARG_NR_POIS: "nrPois"
-};
-
 // implementation of AR-Experience (aka "World")
 var World = {
 	// you may request new data from server periodically, however: in this sample data is only requested once
@@ -70,14 +62,14 @@ var World = {
 
 	// location updates, fired every time you call architectView.setLocation() in native environment
 	// Note: You may set 'AR.context.onLocationChanged = null' to no longer receive location updates in World.locationChanged.
-	locationChanged: function locationChangedFn(lat, lon, alt, acc) {
+	//locationChanged: function locationChangedFn(lat, lon, alt, acc) {
 
 		// request data if not already present
-		if (!World.initiallyLoadedData) {
-			World.requestDataFromServer(lat, lon);
-			World.initiallyLoadedData = true;
-		}
-	},
+		//if (!World.initiallyLoadedData) {
+			//World.requestDataFromServer(lat, lon);
+			//World.initiallyLoadedData = true;
+		//}
+	//},
 
 	// fired when user pressed maker in cam
 	onMarkerSelected: function onMarkerSelectedFn(marker) {
@@ -113,32 +105,52 @@ var World = {
 		You have to update 'ServerInformation' data to use your own own server. Also ensure the JSON format is same as in previous sample's 'myJsonData.js'-file.
 	*/
 	// request POI data
-	requestDataFromServer: function requestDataFromServerFn(lat, lon) {
+	//requestDataFromServer: function requestDataFromServerFn(lat, lon) {
 
 		// set helper var to avoid requesting places while loading
-		World.isRequestingData = true;
-		World.updateStatusMessage('Requesting places from web-service');
+		//World.isRequestingData = true;
+		//World.updateStatusMessage('Requesting places from web-service');
 
 		// server-url to JSON content provider
-		var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
+		//var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
 
-		var jqxhr = $.getJSON(serverUrl, function(data) {
-				World.loadPoisFromJsonData(data);
-			})
-			.error(function(err) {
-				World.updateStatusMessage("Invalid web-service response.", true);
-				World.isRequestingData = false;
-			})
-			.complete(function() {
-				World.isRequestingData = false;
-			});
-	}
+		//var jqxhr = $.getJSON(serverUrl, function(data) {
+			//	World.loadPoisFromJsonData(data);
+		//	})
+		//	.error(function(err) {
+		//		World.updateStatusMessage("Invalid web-service response.", true);
+		//		World.isRequestingData = false;
+		//	})
+		//	.complete(function() {
+		//		World.isRequestingData = false;
+		//	});
+	//}
 
 };
 
+var sendLocationToServer = function(lat, lon, alt, acc) {
+   ws.send(JSON.stringify({id: uuid, latitude: lat, longitude: lon, altitude: alt, title: "title", description: "description"}));
+  }
+
+var uuid = null;
+var ws = new WebSocket("wss://fierce-lake-89972.herokuapp.com");
+ws.onopen = function() {
+  ws.onmessage = function(event) {
+    var data = JSON.parse(event.data);
+    console.log("New data", data);
+    if (data.type == "newConnection") {
+      uuid = data.id;
+      World.initiallyLoadedData = true;
+    } else {
+      World.markerList.push(new Marker(data));
+    };
+  };
+};
+
+
 
 /* forward locationChanges to custom function */
-AR.context.onLocationChanged = World.locationChanged;
+AR.context.onLocationChanged = sendLocationToServer;
 
 /* forward clicks in empty area to World */
 AR.context.onScreenClick = World.onScreenClick;
