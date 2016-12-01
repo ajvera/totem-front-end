@@ -143,19 +143,19 @@ ws.onopen = function() {
     World.isRequestingData = true;
     var data = JSON.parse(event.data);
     if (data.type == "newConnection") {
-      uuid = "Jon";
+      uuid = "Adam";
       World.initiallyLoadedData = true;
     } else {
       if (uuid != data.id) {
       data.latitude = parseFloat(data.latitude);
       data.longitude = parseFloat(data.longitude);
       data.altitude = null
-//      var indexOfUser = indexInWorld(data.id);
-//      if (indexOfUser >= 0) {
-//        World.markerList[indexOfUser].markerObject.locations = new AR.GeoLocation(data.latitude, data.longitude, null);
+      var indexOfUser = indexInWorld(data.id);
+      if (indexOfUser >= 0) {
+        World.markerList[indexOfUser].markerObject.locations = null;
 //      } else {
 //        World.markerList.push(new Marker(data))
-//      }
+      }
       World.markerList.push(new Marker(data))
 //      if (indexOfUser >= 0) {
 //        World.markerList[indexOfUser].markerObject.destroy()
