@@ -39,8 +39,8 @@ function Marker(poiData) {
         zOrder: 1,
         offsetY: 0.55,
         style: {
-            textColor: '#FFFFFF',
-            fontStyle: AR.CONST.FONT_STYLE.BOLD
+            textColor: '#FFFFFF'
+//            fontStyle: AR.CONST.FONT_STYLE.BOLD
         }
     });
 
