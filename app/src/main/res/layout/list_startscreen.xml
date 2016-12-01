@@ -3,27 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+	>
 
 	    <ListView
 			android:id="@android:id/list"
 	        android:layout_width="0dp"
 	        android:layout_height="0dp" android:layout_weight="0">
 	    </ListView>
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:src="@drawable/bg_img"
+			android:scaleType = "centerCrop"/>
 
 	   		     <Button
 	   		         android:id="@+id/buttonLaunchUrl"
-	   		         android:layout_width="300sp"
-	   		         android:layout_height="400sp"
+	   		         android:layout_width="match_parent"
+	   		         android:layout_height="match_parent"
 	   		         android:layout_gravity="center"
 	   		         android:onClick="buttonClicked"
 					 android:layout_centerInParent="true"
-	   		         android:padding="10dp"
-					 android:paddingTop="200dp"
-					 android:paddingBottom="200dp"
-	   		         android:text="@string/main_title_urlLauncher"
-					 android:background="#008487"
-					 android:textColor="#00faff"
-					 android:textSize="69dp"/>
-		
+					 android:paddingBottom="20dp"
+					 android:background="@null" />
+	<TextView
+		android:layout_width="300dp"
+		android:layout_height="275dp"
+		android:textColor="#D4DCFF"
+		android:textSize="69dp"
+		android:paddingTop="200dp"
+		android:paddingLeft="35dp"
+		android:text="@string/main_title_urlLauncher"
+		android:layout_centerInParent="true"
+		android:fontFamily="sans-serif-medium"/>
+
+
 </RelativeLayout>

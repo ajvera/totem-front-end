@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Totem</string>
-    <string name="main_title_urlLauncher">View Totems</string>
+    <string name="main_title_urlLauncher">TOTEM</string>
     <string name="compass_accuracy_low">Please re-calibrate compass by waving your device in a figure 8 motion.</string>
     <string name="location_fetching">Trying to find out where you are</string>
     <string name="device_unsupported">This device is not supported</string>
