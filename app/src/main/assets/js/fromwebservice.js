@@ -127,27 +127,63 @@ var World = {
 	//}
 
 };
+World.markerList = [];
 
-var sendLocationToServer = function(lat, lon, alt, acc) {
-   ws.send(JSON.stringify({id: uuid, latitude: lat, longitude: lon, altitude: alt, title: "title", description: "description"}));
-  }
+// start loading marker assets
+World.markerDrawable_idle = new AR.ImageResource("assets/marker_idle.png");
+World.markerDrawable_selected = new AR.ImageResource("assets/marker_selected.png");
+World.markerDrawable_directionIndicator = new AR.ImageResource("assets/indi.png");
+
+
 
 var uuid = null;
 var ws = new WebSocket("wss://fierce-lake-89972.herokuapp.com");
 ws.onopen = function() {
   ws.onmessage = function(event) {
+    World.isRequestingData = true;
     var data = JSON.parse(event.data);
-    console.log("New data", data);
     if (data.type == "newConnection") {
       uuid = data.id;
       World.initiallyLoadedData = true;
     } else {
-      World.markerList.push(new Marker(data));
+      data.latitude = parseFloat(data.latitude);
+      data.longitude = parseFloat(data.longitude);
+      data.altitude = null
+//      var indexOfUser = indexInWorld(data.id);
+//      if (indexOfUser >= 0) {
+//        World.markerList[indexOfUser].markerObject.locations =  new AR.GeoLocation(data.latitude, data.longitude, null);
+//      } else {
+//        World.markerList.push(new Marker(data))
+//      }
+World.markerList.push(new Marker(data))
+//      if (indexOfUser >= 0) {
+//        World.markerList[indexOfUser].markerObject.destroy()
+//      }
+//      World.markerList.push(new Marker(data))
     };
   };
+  World.isRequestingData = false;
 };
 
-
+function indexInWorld(id) {
+    for (var i = 0; i < World.markerList.length; i++) {
+        if (World.markerList[i].poiData.id == id) {
+            return i;
+        }
+    };
+    return -1;
+}
+var sendLocationToServer = function(lat, lon, alt, acc) {
+    console.log("accuracy: "+acc)
+    console.log("L:" +AR.CONST.LOCATION_ACCURACY.LOW)
+    console.log("M:" +AR.CONST.LOCATION_ACCURACY.MEDIUM)
+    console.log("H:" +AR.CONST.LOCATION_ACCURACY.HIGH)
+   if (ws.readyState == 1) {
+      ws.send(JSON.stringify({id: uuid, latitude: lat, longitude: lon, title: "title", description: "description"}));
+   } else {
+     console.log("waiting")
+   }
+  };
 
 /* forward locationChanges to custom function */
 AR.context.onLocationChanged = sendLocationToServer;
