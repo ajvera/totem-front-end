@@ -142,24 +142,26 @@ ws.onopen = function() {
   ws.onmessage = function(event) {
     World.isRequestingData = true;
     var data = JSON.parse(event.data);
-    if (data.type == "newConnection") {
-      uuid = data.id;
-      World.initiallyLoadedData = true;
-    } else {
-      data.latitude = parseFloat(data.latitude);
-      data.longitude = parseFloat(data.longitude);
-      data.altitude = null
-//      var indexOfUser = indexInWorld(data.id);
-//      if (indexOfUser >= 0) {
-//        World.markerList[indexOfUser].markerObject.locations =  new AR.GeoLocation(data.latitude, data.longitude, null);
-//      } else {
-//        World.markerList.push(new Marker(data))
-//      }
-World.markerList.push(new Marker(data))
-//      if (indexOfUser >= 0) {
-//        World.markerList[indexOfUser].markerObject.destroy()
-//      }
-//      World.markerList.push(new Marker(data))
+    if (data.id != uuid) {
+        if (data.type == "newConnection") {
+          uuid = data.id;
+          World.initiallyLoadedData = true;
+        } else {
+          data.latitude = parseFloat(data.latitude);
+          data.longitude = parseFloat(data.longitude);
+          data.altitude = null;
+          var indexOfUser = indexInWorld(data.id);
+          if (indexOfUser >= 0) {
+            World.markerList[indexOfUser].markerObject.locations = null;
+          }
+            World.markerList.push(new Marker(data))
+          }
+        World.markerList.push(new Marker(data))
+    //      if (indexOfUser >= 0) {
+    //        World.markerList[indexOfUser].markerObject.destroy()
+    //      }
+    //      World.markerList.push(new Marker(data))
+       };
     };
   };
   World.isRequestingData = false;
